@@ -21,12 +21,12 @@ class BlogPage extends React.Component{
   }
   render() {
     return (
-      <div data-bs-theme="dark">
+      <div>
         <Helmet>
           <html lang="en" data-bs-theme="dark"></html>
         </Helmet>
         <Navbar />
-        <div className="album py-5 bg-body-tertiary">
+        <div className="album bg-body-tertiary div-content py-5">
           <div className='container'>
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {this.state.details.map((output, id) => (
