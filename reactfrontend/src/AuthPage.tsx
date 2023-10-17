@@ -5,6 +5,7 @@ import Navbar from './components/navbar';
 import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios';
 
 
 const AuthPage = () => {
@@ -13,7 +14,16 @@ const AuthPage = () => {
   
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      // Здесь вы можете обработать отправку формы, например, отправить данные на сервер
+
+      axios.post('http://localhost:8000/authorization/login/', { email, password })
+      .then((response) => {
+        // Обработка успешного входа
+        console.log('Успешно авторизован');
+      })
+      .catch((error) => {
+        // Обработка ошибок авторизации
+        console.error('Ошибка авторизации', error);
+      });
       console.log('Email:', email);
       console.log('Password:', password);
     };
