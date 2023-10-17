@@ -5,16 +5,26 @@ import Navbar from './components/navbar';
 import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios';
 
 
 const AuthPage = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
   
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      // Здесь вы можете обработать отправку формы, например, отправить данные на сервер
-      console.log('Email:', email);
+
+      axios.post('http://localhost:8000/auth/token/login/', { username, password })
+      .then((response) => {
+        // Обработка успешного входа
+        console.log(response);
+      })
+      .catch((error) => {
+        // Обработка ошибок авторизации
+        console.error('Ошибка авторизации', error);
+      });
+      console.log('Username:', username);
       console.log('Password:', password);
     };
   
@@ -37,8 +47,8 @@ const AuthPage = () => {
                                 <h1 className="h3 mb-3 fw-normal">Enter your e-mail and password</h1>
 
                                 <div className="form-floating">
-                                <input type="email" className="form-control" id="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)}/>
-                                <label htmlFor="floatingInput">Email address</label>
+                                <input type="username" className="form-control" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
+                                <label htmlFor="floatingInput">Username</label>
                                 </div>
                                 <div className="form-floating">
                                 <input type="password" className="form-control" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
