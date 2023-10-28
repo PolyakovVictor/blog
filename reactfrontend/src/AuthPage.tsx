@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Footer from './components/footer';
 import Navbar from './components/navbar';
 import { Helmet } from 'react-helmet';
@@ -9,6 +9,7 @@ import axios from 'axios';
 
 
 const AuthPage = () => {
+    const navigate = useNavigate()
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
   
@@ -17,12 +18,13 @@ const AuthPage = () => {
 
       axios.post('http://localhost:8000/auth/token/login/', { username, password })
       .then((response) => {
-        // Обработка успешного входа
         console.log(response);
+        const token = response.data.auth_token;
+        localStorage.setItem('auth_token', token);
+        navigate('/');
       })
       .catch((error) => {
-        // Обработка ошибок авторизации
-        console.error('Ошибка авторизации', error);
+        console.error('Error: incorrect username or password', error);
       });
       console.log('Username:', username);
       console.log('Password:', password);
