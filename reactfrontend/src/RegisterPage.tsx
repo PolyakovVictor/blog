@@ -5,19 +5,32 @@ import Navbar from './components/navbar';
 import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const RegisterPage = () => {
-    const [nickname, setNickname] = useState('');
+    const navigate = useNavigate();
+
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [password1, setPassword1] = useState('');
+    const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
   
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      console.log('Nickname:', nickname);
+
+      axios.post('http://localhost:8000/auth/users/', { email, username, password })
+          .then((response) => {
+            console.log(response);
+            navigate('/auth/');
+          })
+          .catch((error) => {
+            console.error('Ошибка авторизации', error);
+          });
+      console.log('Username:', username);
       console.log('Email:', email);
-      console.log('Password1:', password1);
+      console.log('Password:', password);
       console.log('Password2:', password2);
     };
   
@@ -40,19 +53,19 @@ const RegisterPage = () => {
                                 <h1 className="h3 mb-3 fw-normal">Sign in to continue</h1>
                                 
                                 <div className="form-floating">
-                                    <input type="nickname" className="form-control" id="nickname" placeholder="Nickname" onChange={(e) => setNickname(e.target.value)}/>
-                                    <label htmlFor="floatingInput">Nickname</label>
+                                    <input type="username" className="form-control" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}/>
+                                    <label htmlFor="floatingInput">Username</label>
                                 </div>
                                 <div className="form-floating">
                                     <input type="email" className="form-control" id="email" placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)}/>
                                     <label htmlFor="floatingInput">Email address</label>
                                 </div>
                                 <div className="form-floating">
-                                    <input type="password1" className="form-control" id="password1" placeholder="Password" onChange={(e) => setPassword1(e.target.value)}/>
-                                    <label htmlFor="floatingInput">Password</label>
+                                    <input type="password" className="form-control" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                                    <label htmlFor="floatingPassword">Password</label>
                                 </div>
                                 <div className="form-floating">
-                                    <input type="password2" className="form-control" id="password2" placeholder="Password" onChange={(e) => setPassword2(e.target.value)}/>
+                                    <input type="password" className="form-control" id="password2" placeholder="Password" onChange={(e) => setPassword2(e.target.value)}/>
                                     <label htmlFor="floatingPassword">Repeat password</label>
                                 </div>
 
