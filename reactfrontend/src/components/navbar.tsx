@@ -59,6 +59,18 @@ const Navbar: React.FC = () => {
                 <strong className='px-1'>Blog</strong>
             </Link>
             <div className='flex item-center'>
+
+              <div className="navbar-toggler dropdown mr-5">
+                <button className="dropdown-toggle text-center lh-base" type="button" data-bs-toggle="dropdown" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                  Create
+                </button>
+                <ul className="dropdown-menu">
+                  <Link to="/create-post"><li><a className="dropdown-item" href="#">Post</a></li></Link>
+                  <li><a className="dropdown-item" href="#">Another action</a></li>
+                  <li><a className="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+
               <h4 className='mr-2 ml-2 mt-2'>Log</h4>
               <button className="navbar-toggler" type="button" onClick={handleLogout} aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                 Out
@@ -105,7 +117,7 @@ const Navbar: React.FC = () => {
                 <strong className='px-1'>Blog</strong>
             </Link>
             <div className='flex item-center'>
-              <h4 className='mr-2 ml-2 mt-2'>Sign</h4>
+              <h4 className='mr-2 ml-2 mt-2'>Log</h4>
               <Link to="/auth" className='text-decoration-none flex'>
                 <button className="navbar-toggler" type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                   In

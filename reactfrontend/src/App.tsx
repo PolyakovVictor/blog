@@ -4,6 +4,7 @@ import BlogPage from './BlogPage';
 import HomePage from './HomePage';
 import AuthPage from './AuthPage';
 import RegisterPage from './RegisterPage';
+import CreatePostPage from './CreatePostPage';
 
 class App extends React.Component {
   render() {
@@ -11,6 +12,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Routes>
+            <Route path="/create-post" element={<CreatePostPage/> }></Route>
             <Route path="/register" element={<RegisterPage/> }></Route>
             <Route path="/auth" element={<AuthPage/ >} />
             <Route path="/blog" element={<BlogPage/ >} />
