@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 const AuthPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
   
@@ -18,7 +18,6 @@ const AuthPage = () => {
 
       axios.post('http://localhost:8000/auth/token/login/', { username, password })
       .then((response) => {
-        console.log(response);
         const token = response.data.auth_token;
         localStorage.setItem('auth_token', token);
         navigate('/');
@@ -26,8 +25,6 @@ const AuthPage = () => {
       .catch((error) => {
         console.error('Error: incorrect username or password', error);
       });
-      console.log('Username:', username);
-      console.log('Password:', password);
     };
   
     return (

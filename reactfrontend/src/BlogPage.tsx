@@ -18,6 +18,7 @@ class BlogPage extends React.Component{
       axios.get('http://localhost:8000/api/post/')
       .then(res => {data = res.data; this.setState({ details: data});})
       .catch(err => {console.log(err);})
+      console.log(data)
   }
   render() {
     return (

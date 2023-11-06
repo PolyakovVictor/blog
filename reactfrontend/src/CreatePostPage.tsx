@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Footer from './components/footer';
 import Navbar from './components/navbar';
@@ -9,16 +9,37 @@ import axios from 'axios';
 
 
 const CreatePostPage = () => {
+    const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
     const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
+    const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
+    const [tags, setTags] = useState('');
     const [image, setImage] = useState<File | null>(null);
-   
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/categories/')
+        .then(response => {
+            setCategories(response.data);
+            console.log(categories);
+        })
+        .catch(error => {
+            console.log('Error: ', error);
+        })
+    }, []);
+
     const handleSubmit = (e: React.FormEvent) => {
-       e.preventDefault();
-   
-       console.log({ title, body, category, image });
-    };
+        e.preventDefault();
+
+        axios.post('http://localhost:8000/api/post/', {title, description, category, tags, image})
+        .then((response) => {
+            console.log(response)
+            navigate('/blog');
+        })
+        .catch((error) => {
+            console.error('Error: Create post: ', error)
+        })
+    }
   
     return (
         <div>
@@ -47,8 +68,8 @@ const CreatePostPage = () => {
                                 <textarea
                                 className="form-control"
                                 id="body"
-                                value={body}
-                                onChange={(e) => setBody(e.target.value)}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                                 />
                             </div>
                             <div className="form-group pb-3">
@@ -60,16 +81,26 @@ const CreatePostPage = () => {
                                 onChange={(e) => setCategory(e.target.value)}
                                 >
                                 <option value="">Choose...</option>
-                                <option value="1">Category 1</option>
-                                <option value="2">Category 2</option>
-                                <option value="3">Category 3</option>
+                                {categories.map((cat) => (
+                                    <option key={cat.name} value={cat.name}>{cat.name}</option>
+                                ))}
                                 </select>
+                            </div>
+                            <div className="form-group pb-3">
+                                <label htmlFor="tags">Tags</label>
+                                <input
+                                type="text"
+                                className="form-control"
+                                id="tags"
+                                value={tags}
+                                onChange={(e) => setTags(e.target.value)}
+                                />
                             </div>
                             <div className="form-group pb-3">
                                 <label htmlFor="image">Image</label>
                                 <input
                                 type="file"
-                                className="form-control-file"
+                                className="form-control-file pl-1.5"
                                 id="image"
                                 onChange={(e) => setImage(e.target.files && e.target.files[0])}
                                 />
