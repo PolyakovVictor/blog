@@ -10,18 +10,26 @@ import axios from 'axios';
 
 const CreatePostPage = () => {
     const navigate = useNavigate();
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
     const [tags, setTags] = useState('');
     const [image, setImage] = useState<File | null>(null);
+    const token = localStorage.getItem('auth_token')
+
+    const axiosInstance = axios.create({
+        baseURL: 'http://localhost:8000/', // Замініть на URL вашого DRF API
+        headers: {
+          'Authorization': `token ${token}`, // Додаємо токен до заголовків
+          'Content-Type': 'application/json', // Можливо, знадобиться Content-Type залежно від вашого API
+        },
+      });
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/categories/')
+        axiosInstance.get('api/categories/')
         .then(response => {
             setCategories(response.data);
-            console.log(categories);
         })
         .catch(error => {
             console.log('Error: ', error);
@@ -30,8 +38,8 @@ const CreatePostPage = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        axios.post('http://localhost:8000/api/post/', {title, description, category, tags, image})
+        console.log(image)
+        axiosInstance.post('api/post/', {title, description, category, tags, image})
         .then((response) => {
             console.log(response)
             navigate('/blog');

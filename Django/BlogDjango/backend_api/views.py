@@ -13,22 +13,35 @@ class PostView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-
         if not request.user.is_authenticated:
             raise ValidationError({"detail": "Пользователь не авторизован"})
 
-        tags_data = request.data.get('tags', [])
-        tags = []
+        title = request.data.get('title')
+        description = request.data.get('description')
+        category_name = request.data.get('category')
+        category_obj, category_created = Category.objects.get_or_create(name=category_name)
+        image = request.data.get('image')
+        print(image)
+        tags_data = request.data.get('tags', '')
 
-        for tag_name in tags_data:
-            tag_obj = Tag.objects.get_or_create(name=tag_name)[0]
-            tags.append(tag_obj)
+        tags = [tag.strip() for tag in tags_data.split(' ') if tag.strip()]
 
-        serializer = PostSerializer(data=request.data)
+        serializer = PostSerializer(data={
+            'title': title,
+            'description': description,
+            'category': category_obj.pk,
+            'author': request.user.id,
+            'image': image,
+        })
+        print(serializer)
         if serializer.is_valid(raise_exception=True):
             post = serializer.save()
-            post.tags.add(*tags)
+            for tag_text in tags:
+                tag, tag_created = Tag.objects.get_or_create(name=tag_text)
+                post.tags.add(tag)
             return Response(serializer.data)
+        else:
+            return Response(serializer.error, status=400)
 
 
 class CategoryView(APIView):
