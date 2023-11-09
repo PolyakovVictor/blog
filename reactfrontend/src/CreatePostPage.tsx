@@ -15,14 +15,21 @@ const CreatePostPage = () => {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
     const [tags, setTags] = useState('');
-    const [image, setImage] = useState<File | null>(null);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const token = localStorage.getItem('auth_token')
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files && event.target.files[0];
+        if (file) {
+          setSelectedImage(file);
+        }
+      };
+
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8000/', // Замініть на URL вашого DRF API
+        baseURL: 'http://localhost:8000/',
         headers: {
-          'Authorization': `token ${token}`, // Додаємо токен до заголовків
-          'Content-Type': 'application/json', // Можливо, знадобиться Content-Type залежно від вашого API
+          'Authorization': `token ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -38,15 +45,24 @@ const CreatePostPage = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(image)
-        axiosInstance.post('api/post/', {title, description, category, tags, image})
-        .then((response) => {
-            console.log(response)
-            navigate('/blog');
-        })
-        .catch((error) => {
-            console.error('Error: Create post: ', error)
-        })
+        if (selectedImage) {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('category', category);
+            formData.append('tags', tags);
+            formData.append('image', selectedImage);
+
+            console.log(formData)
+            axiosInstance.post('api/post/', formData)
+            .then((response) => {
+                console.log(response)
+                navigate('/blog');
+            })
+            .catch((error) => {
+                console.error('Error: Create post: ', error)
+            })
+        }
     }
   
     return (
@@ -59,7 +75,7 @@ const CreatePostPage = () => {
             <section className="vh-adjusted-section album bg-body-tertiary h-[calc(100vh-209px)]">
                 <div className='mask d-flex align-items-center h-100 gradient-custom-3'>
                     <div className='container card w-50'>
-                        <form className='m-12' onSubmit={handleSubmit}>
+                        <form className='m-12' onSubmit={handleSubmit} encType='multipart/form-data'>
                             <legend>Post creation form</legend>
                             <div className="form-group pb-3">
                                 <label htmlFor="title">Title</label>
@@ -108,9 +124,11 @@ const CreatePostPage = () => {
                                 <label htmlFor="image">Image</label>
                                 <input
                                 type="file"
+                                name="image"
+                                accept='image/'
                                 className="form-control-file pl-1.5"
                                 id="image"
-                                onChange={(e) => setImage(e.target.files && e.target.files[0])}
+                                onChange={handleImageChange}
                                 />
                             </div>
                             <button type="submit" className="btn btn-primary">

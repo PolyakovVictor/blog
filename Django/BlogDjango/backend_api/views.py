@@ -21,7 +21,7 @@ class PostView(APIView):
         category_name = request.data.get('category')
         category_obj, category_created = Category.objects.get_or_create(name=category_name)
         image = request.data.get('image')
-        print(image)
+        print(request.FILES)
         tags_data = request.data.get('tags', '')
 
         tags = [tag.strip() for tag in tags_data.split(' ') if tag.strip()]
