@@ -12,9 +12,16 @@ from .models import Post, Tag, Category
 #     updated_at = serializers.DateTimeField(read_only=True)
 
 class PostSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Post
-        fields = ['title', 'image', 'description', 'author', 'category', 'created_at', 'updated_at']
+        fields = ['title', 'image', 'image_url', 'description', 'author', 'category', 'created_at', 'updated_at']
+
+    def get_image_url(self, obj):
+        if obj.image:
+            return self.context['request'].build_absolute_uri(obj.image.url)
+        return None
 
 
 class TagSerializer(serializers.ModelSerializer):

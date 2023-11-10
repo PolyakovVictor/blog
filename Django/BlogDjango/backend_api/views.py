@@ -9,7 +9,8 @@ from rest_framework.response import Response
 class PostView(APIView):
     def get(self, request):
         posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
+        serializer = PostSerializer(posts, many=True, context={'request': request})
+        print(serializer.data)
         return Response(serializer.data)
 
     def post(self, request):
@@ -32,7 +33,7 @@ class PostView(APIView):
             'category': category_obj.pk,
             'author': request.user.id,
             'image': image,
-        })
+        }, context={'request': request})
         print(serializer)
         if serializer.is_valid(raise_exception=True):
             post = serializer.save()
