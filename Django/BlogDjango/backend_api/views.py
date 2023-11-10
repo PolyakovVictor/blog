@@ -1,18 +1,28 @@
 from django.forms import ValidationError
-from django.shortcuts import render
 from rest_framework.views import APIView
-from .models import Post, Tag, Category
+from .models import Post, Category
 from .serializer import PostSerializer, CategorySerializer
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from . import utils
 
 
+class PostViewPagination(PageNumberPagination):
+    page_size = 9
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class PostView(APIView):
+    pagination_class = PostViewPagination
+
     def get(self, request):
         posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True, context={'request': request})
+        paginator = self.pagination_class()
+        result_page = paginator.paginate_queryset(posts, request)
+        serializer = PostSerializer(result_page, many=True, context={'request': request})
 
-        return Response(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         if not request.user.is_authenticated:
