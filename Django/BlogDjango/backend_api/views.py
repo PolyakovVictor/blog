@@ -4,28 +4,21 @@ from rest_framework.views import APIView
 from .models import Post, Tag, Category
 from .serializer import PostSerializer, CategorySerializer
 from rest_framework.response import Response
+from . import utils
 
 
 class PostView(APIView):
     def get(self, request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True, context={'request': request})
-        print(serializer.data)
+
         return Response(serializer.data)
 
     def post(self, request):
         if not request.user.is_authenticated:
-            raise ValidationError({"detail": "Пользователь не авторизован"})
+            raise ValidationError({"detail": "User not authorized"})
 
-        title = request.data.get('title')
-        description = request.data.get('description')
-        category_name = request.data.get('category')
-        category_obj, category_created = Category.objects.get_or_create(name=category_name)
-        image = request.data.get('image')
-        print(request.FILES)
-        tags_data = request.data.get('tags', '')
-
-        tags = [tag.strip() for tag in tags_data.split(' ') if tag.strip()]
+        title, description, category_obj, image, tags = utils.get_data_from_request(request)
 
         serializer = PostSerializer(data={
             'title': title,
@@ -34,12 +27,10 @@ class PostView(APIView):
             'author': request.user.id,
             'image': image,
         }, context={'request': request})
-        print(serializer)
+
         if serializer.is_valid(raise_exception=True):
             post = serializer.save()
-            for tag_text in tags:
-                tag, tag_created = Tag.objects.get_or_create(name=tag_text)
-                post.tags.add(tag)
+            utils.add_or_create_tag(tags=tags, post=post)
             return Response(serializer.data)
         else:
             return Response(serializer.error, status=400)
