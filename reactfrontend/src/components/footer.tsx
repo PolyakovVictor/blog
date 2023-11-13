@@ -1,4 +1,4 @@
-import '../style/navbar.css';
+import '../style/footer.css';
 import { Helmet } from "react-helmet";
 import "bootstrap/dist/css/bootstrap.min.css";
 

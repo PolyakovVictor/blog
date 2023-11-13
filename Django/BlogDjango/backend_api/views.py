@@ -55,6 +55,5 @@ class CategoryView(APIView):
     def post(self, request):
         pass
 
-
 # class TagView(APIView):
 #     def get(self,)
