@@ -1,7 +1,8 @@
 import React from 'react';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 import '../style/tagsBar.css';
-import { Helmet } from 'react-helmet';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { ITagItem } from '../models';
 
 interface TagsBarProps {
@@ -9,16 +10,29 @@ interface TagsBarProps {
 }
 
 const TagsBar: React.FC<TagsBarProps> = ({ tags }) => {
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 10,
+    slidesToScroll: 5,
+    arrows: true,
+  };
+
   return (
-        <div className='d-flex gap-2 justify-content-center py-5 mb-4'>
-          {tags.map((tag) => (
-            <span className="badge d-flex p-2 align-items-center text-bg-primary rounded-pill">
-                <span className='px-1'>
-                  {tag.name}
-                </span>
+    <div className='py-5 mb-4'>
+      <Slider {...settings}>
+        {tags.map((tag, index) => (
+          <div key={index} className='p-2'>
+            <span className="badge d-flex p-2 align-items-center text-bg-secondary rounded-pill justify-content-center fs-5">
+              <span className='px-1'>
+                {tag.name}
               </span>
-          ))}
-        </div>
+            </span>
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
 };
 
