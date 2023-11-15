@@ -5,3 +5,7 @@ export interface IProduct {
     author: string
     date: string
 }
+
+export interface ITagItem{
+    name: string
+}

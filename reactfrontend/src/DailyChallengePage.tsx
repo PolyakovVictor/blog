@@ -4,7 +4,7 @@ import './style/blogpage.css';
 import { Post } from './components/post';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
-import CategoryBar from './components/categoryBar';
+import TagsBar from './components/tagsBar';
 import "bootstrap/dist/js/bootstrap.min.js";
 import ReactPaginate from 'react-paginate';
 import { Helmet } from 'react-helmet';
@@ -14,6 +14,7 @@ class DailyChallengePage extends Component {
     posts: [],
     currentPage: 1,
     totalPages: 1,
+    tags: [],
   }
 
   fetchPosts = async (page : any) => {
@@ -30,6 +31,7 @@ class DailyChallengePage extends Component {
 
   componentDidMount() {
     this.fetchPosts(this.state.currentPage);
+    this.fetchTags();
   }
 
   handlePageChange = ({ selected }: { selected : number }) => {
@@ -37,6 +39,17 @@ class DailyChallengePage extends Component {
     this.setState({ currentPage: newPage }, () => {
       this.fetchPosts(this.state.currentPage);
     });
+  };
+
+  fetchTags = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/tag/');
+      const tags = response.data;
+      this.setState({tags: tags});
+      console.log(tags)
+    } catch (error) {
+      console.error('Error loading categories:', error);
+    }
   };
 
   render() {
@@ -48,9 +61,11 @@ class DailyChallengePage extends Component {
         </Helmet>
         <Navbar />
         <div className="album bg-body-tertiary div-content py-4">
-            <div className='mb-4'>
-                <CategoryBar />
-            </div>
+              {this.state.tags ? (
+                  <TagsBar tags={this.state.tags}/>
+              ) : (
+                <p>Loading...</p>
+              )}
             <div className='container'>
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     {this.state.posts.map((output, id) => (

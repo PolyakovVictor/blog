@@ -1,7 +1,7 @@
 from django.forms import ValidationError
 from rest_framework.views import APIView
-from .models import Post, Category
-from .serializer import PostSerializer, CategorySerializer
+from .models import Post, Category, Tag
+from .serializer import PostSerializer, CategorySerializer, TagSerializer
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from . import utils
@@ -55,5 +55,9 @@ class CategoryView(APIView):
     def post(self, request):
         pass
 
-# class TagView(APIView):
-#     def get(self,)
+
+class TagView(APIView):
+    def get(self, request):
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)

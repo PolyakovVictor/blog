@@ -1,0 +1,7 @@
+.category-bar {
+    padding: 10px 0;
+  }
+  
+  .nav-pills .nav-link {
+    margin: 0 5px; /* Регулировка отступов между тегами */
+  }
