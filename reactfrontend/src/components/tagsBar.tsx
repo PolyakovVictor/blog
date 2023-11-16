@@ -20,18 +20,20 @@ const TagsBar: React.FC<TagsBarProps> = ({ tags }) => {
   };
 
   return (
-    <div className='py-5 mb-4'>
-      <Slider {...settings}>
-        {tags.map((tag, index) => (
-          <div key={index} className='p-2'>
-            <span className="badge d-flex p-2 align-items-center text-bg-secondary rounded-pill justify-content-center fs-5">
-              <span className='px-1'>
-                {tag.name}
+    <div className='py-3 mb-4'>
+      <div className='pl-10 pr-10'>
+        <Slider {...settings}>
+          {tags.map((tag, index) => (
+            <div key={index} className='p-2'>
+              <span className="badge d-flex p-2 align-items-center text-bg-secondary rounded-pill justify-content-center fs-5">
+                <span className='px-1'>
+                  {tag.name}
+                </span>
               </span>
-            </span>
-          </div>
-        ))}
-      </Slider>
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 };

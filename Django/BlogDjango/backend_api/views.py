@@ -5,6 +5,7 @@ from .serializer import PostSerializer, CategorySerializer, TagSerializer
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from . import utils
+from rest_framework import generics
 
 
 class PostViewPagination(PageNumberPagination):
@@ -44,6 +45,13 @@ class PostView(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.error, status=400)
+
+
+class PostDetailView(generics.RetrieveAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return Post.objects.filter(pk=self.kwargs['pk'])
 
 
 class CategoryView(APIView):

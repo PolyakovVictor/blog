@@ -7,7 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['title', 'image', 'image_url', 'description', 'author', 'category', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'image', 'image_url', 'description', 'author', 'category', 'created_at', 'updated_at']
 
     def get_image_url(self, obj):
         if obj.image:
@@ -18,10 +18,10 @@ class PostSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['name']
+        fields = ['id', 'name']
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name']
+        fields = ['id', 'name']

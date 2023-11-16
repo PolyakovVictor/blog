@@ -1,0 +1,17 @@
+.sticky-top{
+    top: 80px;
+}
+
+#intro {
+    margin-top: 58px;
+  }
+
+  @media (max-width: 991px) {
+    #intro {
+      margin-top: 45px;
+    }
+  }
+
+  .user-image{
+    height: 35px;
+  }
