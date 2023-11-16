@@ -6,6 +6,7 @@ import AuthPage from './AuthPage';
 import RegisterPage from './RegisterPage';
 import CreatePostPage from './CreatePostPage';
 import DailyChallengePage from './DailyChallengePage';
+import DetailPostPage from './DetailPostPage';
 
 class App extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class App extends React.Component {
         <div>
           <Routes>
             <Route path="/create-post" element={<CreatePostPage/> }></Route>
+            <Route path="/detail-post/:id" element={<DetailPostPage /> }></Route>
             <Route path="/daily-challenge" element={<DailyChallengePage/> }></Route>
             <Route path="/register" element={<RegisterPage/> }></Route>
             <Route path="/auth" element={<AuthPage/ >} />
