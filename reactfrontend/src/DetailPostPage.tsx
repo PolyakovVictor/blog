@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
+import { ITagItem } from './models';
 
 
 const DetailPostPage = () => {
@@ -15,7 +16,7 @@ const DetailPostPage = () => {
 
     const fetchPost = async (page_id: any) => {
         try {
-        const response = await axios.get(`http://localhost:8000/api/post/${page_id}`);
+        const response = await axios.get(`http://localhost:8000/api/post/${page_id}/`);
         setPost(response.data);
         } catch (error) {
         console.error('Error loading data:', error);
@@ -23,9 +24,14 @@ const DetailPostPage = () => {
     };
 
     useEffect(() => {
-        fetchPost(post_id); // Вы можете вызвать fetchPost в useEffect, чтобы выполнить запрос при загрузке компонента
+        fetchPost(post_id);
     }, [post_id]);
+
+    useEffect(() => {
+        console.log(post);
+    }, [post]);
   
+    if (post) {
     return (
         <div>
             <Helmet>
@@ -40,16 +46,16 @@ const DetailPostPage = () => {
                     <div className="col-md-8 mb-4">
 
                     <section className="border-bottom mb-4">
-                        <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg"
-                        className="img-fluid shadow-2-strong rounded-5 mb-4" alt="" />
+                        <img src={post.image}
+                        className="img-fluid shadow-2-strong rounded-2 mb-4 main-image" alt="" />
 
                         <div className="row align-items-center mb-4">
                             <div className="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
                                 <div className="d-inline-flex align-items-center">
                                     <img src="https://mdbootstrap.com/img/Photos/Avatars/img (23).jpg" className="user-image rounded-5 shadow-1-strong me-2"
                                     alt="" loading="lazy" />
-                                    <span> Published <u>15.07.2020</u> by</span>
-                                    <a href="" className="text-dark">Anna</a>
+                                    <span>{post.title} Published <u>15.07.2020</u> by</span>
+                                    <a href="" className="ms-2">Anna</a>
                                 </div>
                             </div>
                         </div>
@@ -57,21 +63,15 @@ const DetailPostPage = () => {
 
                     <section className='border-bottom pb-4'>
 
-                        <span className="badge text-bg-dark fs-6 p-3">tags</span>
+                        {post.tags.map((tag: ITagItem) => (
+                            <span key={tag.id} className="badge text-bg-dark fs-6 p-3 mr-2">{tag.name}</span>
+                        ))}
 
                     </section>
 
                     <section className='pt-2'>
-
                         <p><strong>Description</strong></p>
-                        <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio sapiente molestias
-                        consectetur. Fuga nulla officia error placeat veniam, officiis rerum laboriosam
-                        ullam molestiae magni velit laborum itaque minima doloribus eligendi! Lorem ipsum,
-                        dolor sit amet consectetur adipisicing elit. Optio sapiente molestias consectetur.
-                        Fuga nulla officia error placeat veniam, officiis rerum laboriosam ullam molestiae
-                        magni velit laborum itaque minima doloribus eligendi!
-                        </p>
+                        <p>{post.description}</p>
 
                     </section>
 
@@ -190,6 +190,18 @@ const DetailPostPage = () => {
             <Footer/>
         </div>
     );
-  };
+  } else {
+    return (
+        <div>
+            <Helmet>
+            <html lang="en" data-bs-theme="dark"></html>
+            </Helmet>
+            <Navbar />
+            <h4>Loading...</h4>
+            <Footer/>
+        </div>
+    );
+    }
+}
 
 export default DetailPostPage;

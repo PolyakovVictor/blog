@@ -8,5 +8,6 @@ export interface IProduct {
 }
 
 export interface ITagItem{
+    id: number
     name: string
 }

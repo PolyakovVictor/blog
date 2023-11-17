@@ -15,7 +15,7 @@ class App extends React.Component {
         <div>
           <Routes>
             <Route path="/create-post" element={<CreatePostPage/> }></Route>
-            <Route path="/detail-post/:id" element={<DetailPostPage /> }></Route>
+            <Route path="/detail-post/:post_id" element={<DetailPostPage /> }></Route>
             <Route path="/daily-challenge" element={<DailyChallengePage/> }></Route>
             <Route path="/register" element={<RegisterPage/> }></Route>
             <Route path="/auth" element={<AuthPage/ >} />

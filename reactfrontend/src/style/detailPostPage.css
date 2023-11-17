@@ -15,3 +15,9 @@
   .user-image{
     height: 35px;
   }
+
+  .main-image {
+    max-width: 615px;
+    min-height: 400px;
+    height: auto;
+}
