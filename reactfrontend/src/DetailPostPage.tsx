@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import Footer from './components/footer';
 import Navbar from './components/navbar';
+import Comment from './components/comment';
 import './style/detailPostPage.css';
 import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
-import { ITagItem } from './models';
+import { IComment, ITagItem } from './models';
 
 
 const DetailPostPage = () => {
@@ -79,58 +80,12 @@ const DetailPostPage = () => {
 
 
                     <section className="border-bottom border-top py-4 mb-3">
-                        <p className="text-center"><strong>Comments: 3</strong></p>
+                        <p className="text-center"><strong>Comments</strong></p>
 
+                        {post.comments.map((comment : IComment) => (
+                            <Comment comment={comment} key={comment.id} />
+                        ))}
 
-                        <div className="row mb-4">
-                        <div className="col-2">
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(24).jpg"
-                            className="img-fluid shadow-1-strong rounded-5" alt="" />
-                        </div>
-
-                        <div className="col-10">
-                            <p className="mb-2"><strong>Marta Dolores</strong></p>
-                            <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                            inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                            Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                            </p>
-                        </div>
-                        </div>
-
-
-                        <div className="row mb-4">
-                        <div className="col-2">
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(25).jpg"
-                            className="img-fluid shadow-1-strong rounded-5" alt="" />
-                        </div>
-
-                        <div className="col-10">
-                            <p className="mb-2"><strong>Valeria Groove</strong></p>
-                            <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                            inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                            Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                            </p>
-                        </div>
-                        </div>
-
-
-                        <div className="row mb-4">
-                        <div className="col-2">
-                            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(26).jpg"
-                            className="img-fluid shadow-1-strong rounded-5" alt="" />
-                        </div>
-
-                        <div className="col-10">
-                            <p className="mb-2"><strong>Antonia Velez</strong></p>
-                            <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                            inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                            Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                            </p>
-                        </div>
-                        </div>
                     </section>
 
 

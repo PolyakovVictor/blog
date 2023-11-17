@@ -1,6 +1,6 @@
 from django.forms import ValidationError
 from rest_framework.views import APIView
-from .models import Post, Category, Tag
+from .models import Post, Category, Tag, Comment
 from .serializer import PostSerializer, CategorySerializer, TagSerializer
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
