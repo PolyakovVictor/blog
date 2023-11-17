@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import Footer from './components/footer';
 import Navbar from './components/navbar';
@@ -10,20 +10,21 @@ import axios from 'axios';
 
 
 const DetailPostPage = () => {
-    const navigate = useNavigate();
     const { post_id } = useParams<{ post_id: string }>();
-  
-    fetchPosts = async (page : any) => {
+    const [post, setPost] = useState<any>(null);
+
+    const fetchPost = async (page_id: any) => {
         try {
-          const response = await axios.get(`http://localhost:8000/api/post/${post_id}`);
-          this.setState({
-            posts: response.data.results,
-            totalPages: response.data.count,
-          });
+        const response = await axios.get(`http://localhost:8000/api/post/${page_id}`);
+        setPost(response.data);
         } catch (error) {
-          console.error('Error loading data:', error);
+        console.error('Error loading data:', error);
         }
-      };
+    };
+
+    useEffect(() => {
+        fetchPost(post_id); // Вы можете вызвать fetchPost в useEffect, чтобы выполнить запрос при загрузке компонента
+    }, [post_id]);
   
     return (
         <div>

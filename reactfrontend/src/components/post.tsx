@@ -25,7 +25,7 @@ export function Post(props: ProductProps) {
                     <p className="card-text">{ props.product.description }</p>
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="btn-group">
-                            <Link to="/detail-post" className='text-decoration-none flex mr-3'>
+                            <Link to={`/detail-post/${props.product.id}`} className='text-decoration-none flex mr-3'>
                                 <button type="button" className="btn btn-sm btn-outline-secondary">View</button>
                             </Link>
                             <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
