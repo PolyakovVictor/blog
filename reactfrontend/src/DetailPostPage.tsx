@@ -14,6 +14,8 @@ import { IComment, ITagItem } from './models';
 const DetailPostPage = () => {
     const { post_id } = useParams<{ post_id: string }>();
     const [post, setPost] = useState<any>(null);
+    const [comment_text, setComment_text] = useState('');
+    const token = localStorage.getItem('auth_token')
 
     const fetchPost = async (page_id: any) => {
         try {
@@ -31,6 +33,33 @@ const DetailPostPage = () => {
     useEffect(() => {
         console.log(post);
     }, [post]);
+
+
+    const handleSubmit = async (event : any) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch('http://localhost:8000/api/comment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `token ${token}`,
+                },
+                body: JSON.stringify({ content: comment_text, post: post_id }),
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.log('error')
+            }
+        } catch (error) {
+            console.log('Error: added comments ', error)
+        }
+    };
+
+    const handleTextChange = (event : any) => {
+        setComment_text(event.target.value);
+    };
   
     if (post) {
     return (
@@ -93,17 +122,16 @@ const DetailPostPage = () => {
                     <section>
                         <p className="text-center"><strong>Leave a reply</strong></p>
 
-                        <form>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-outline mb-4">
+                                <textarea className="form-control" id="form4Example3" onChange={handleTextChange}></textarea>
+                                <label className="form-label">Text</label>
+                            </div>
 
-                        <div className="form-outline mb-4">
-                            <textarea className="form-control" id="form4Example3"></textarea>
-                            <label className="form-label">Text</label>
-                        </div>
 
-
-                        <button type="submit" className="btn btn-primary btn-block mb-4">
-                            Publish
-                        </button>
+                            <button type="submit" className="btn btn-primary btn-block mb-4">
+                                Publish
+                            </button>
                         </form>
                     </section>
 

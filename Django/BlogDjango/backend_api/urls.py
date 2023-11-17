@@ -7,6 +7,7 @@ app_name = 'api'
 urlpatterns = [
     path('post/', views.PostView.as_view(), name='post'),
     path('categories/', views.CategoryView.as_view(), name='category'),
+    path('comment/', views.CommentView.as_view(), name='comment'),
     path('tag/', views.TagView.as_view(), name='tag'),
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
 ]

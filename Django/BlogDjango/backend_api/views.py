@@ -1,7 +1,7 @@
 from django.forms import ValidationError
 from rest_framework.views import APIView
 from .models import Post, Category, Tag, Comment
-from .serializer import PostSerializer, CategorySerializer, TagSerializer
+from .serializer import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from . import utils
@@ -29,7 +29,7 @@ class PostView(APIView):
         if not request.user.is_authenticated:
             raise ValidationError({"detail": "User not authorized"})
 
-        title, description, category_obj, image, tags = utils.get_data_from_request(request)
+        title, description, category_obj, image, tags = utils.get_post_data_from_request(request)
 
         serializer = PostSerializer(data={
             'title': title,
@@ -52,6 +52,19 @@ class PostDetailView(generics.RetrieveAPIView):
 
     def get_queryset(self):
         return Post.objects.filter(pk=self.kwargs['pk'])
+
+
+class CommentView(APIView):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            raise ValidationError({"detail": "User not authorized"})
+        request_data = request.data.copy()
+        request_data['user'] = str(request.user.id)
+        print(request_data)
+        serializer = CommentSerializer(data=request_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class CategoryView(APIView):

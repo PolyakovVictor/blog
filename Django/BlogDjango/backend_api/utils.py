@@ -1,7 +1,7 @@
 from .models import Category, Tag
 
 
-def get_data_from_request(request):
+def get_post_data_from_request(request):
     title = request.data.get('title')
     description = request.data.get('description')
     category_name = request.data.get('category')
@@ -11,6 +11,10 @@ def get_data_from_request(request):
     tags = [tag.strip() for tag in tags_data.split(' ') if tag.strip()]
 
     return (title, description, category_obj, image, tags)
+
+
+def get_comment_data_from_request(request):
+    pass
 
 
 def add_or_create_tag(tags, post):
