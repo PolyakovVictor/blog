@@ -3,7 +3,10 @@ export interface IProduct {
     image: string | undefined
     title: string
     description: string
-    author: string
+    author: {
+        id: number
+        username: string
+    }
     date: string
 }
 

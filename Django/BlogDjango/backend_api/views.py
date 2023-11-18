@@ -84,7 +84,7 @@ class TagView(APIView):
         return Response(serializer.data)
 
 
-class PostListByTag(generics.ListAPIView):
+class PostListByTagView(generics.ListAPIView):
     pagination_class = PostViewPagination
     serializer_class = PostSerializer
 
@@ -92,6 +92,24 @@ class PostListByTag(generics.ListAPIView):
         tag_id = self.kwargs['tag_id']
         tag = get_object_or_404(Tag, id=tag_id)
         posts = Post.objects.filter(tags=tag)
+        return posts
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request)
+        serializer = self.serializer_class(page, many=True, context={'request': request})
+        return paginator.get_paginated_response(serializer.data)
+
+
+class PostListByCategoryView(generics.ListAPIView):
+    pagination_class = PostViewPagination
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        category = get_object_or_404(Category, id=category_id)
+        posts = Post.objects.filter(category=category)
         return posts
 
     def get(self, request, *args, **kwargs):

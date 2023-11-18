@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import Footer from './components/footer';
 import Navbar from './components/navbar';
 import Comment from './components/comment';
+import {SamePost} from './components/displaySamePost';
 import './style/detailPostPage.css';
 import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -14,6 +15,7 @@ import { IComment, ITagItem } from './models';
 const DetailPostPage = () => {
     const { post_id } = useParams<{ post_id: string }>();
     const [post, setPost] = useState<any>(null);
+    const [same_posts, setSamePosts] = useState([]);
     const [comment_text, setComment_text] = useState('');
     const token = localStorage.getItem('auth_token')
 
@@ -26,12 +28,23 @@ const DetailPostPage = () => {
         }
     };
 
+    const fetchSamePosts = async (category_id: any) => {
+        try {
+          const response = await axios.get(`http://localhost:8000/api/post/by_category/${category_id}/?page=1`);
+          setSamePosts(response.data.results);
+        } catch (error) {
+          console.error('Error loading data:', error);
+        }
+      };
+
     useEffect(() => {
         fetchPost(post_id);
     }, [post_id]);
 
     useEffect(() => {
-        console.log(post);
+        if (post && post.category.id) {
+            fetchSamePosts(post.category.id);
+        }
     }, [post]);
 
 
@@ -61,7 +74,7 @@ const DetailPostPage = () => {
         setComment_text(event.target.value);
     };
   
-    if (post) {
+    if (post && same_posts) {
     return (
         <div>
             <Helmet>
@@ -145,28 +158,18 @@ const DetailPostPage = () => {
 
                     <section className="sticky-top">
 
-                        <section className="text-center border-bottom pb-4 mb-4">
-                        <div className="bg-image hover-overlay ripple mb-4">
-                            <img
-                            src="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/content/en/_mdb5/standard/about/assets/mdb5-about.webp"
-                            className="img-fluid" />
-                            <a href="https://mdbootstrap.com/docs/standard/" target="_blank">
-                            <div className="mask"></div>
-                            </a>
-                        </div>
-                        <h5>Material Design for Bootstrap 5</h5>
-
-                        <a role="button" className="btn btn-primary d-block mt-2" href="https://mdbootstrap.com/docs/standard/"
-                            target="_blank">Download for free<i className="fas fa-download ms-2"></i></a>
-                        </section>
-
-
-
                         <section className="text-center">
-                        <h5 className="mb-4">Learn the newest Bootstrap 5</h5>
-
-
+                            <h5 className="mb-4">Category {post.category.name}</h5>
                         </section>
+
+                        <section className="text-center border-bottom pb-4 mb-4">
+                            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                                {same_posts.map((output, id) => (
+                                    <SamePost key={id} product={output} />
+                                ))}
+                            </div>
+                        </section>
+
                     </section>
                     </div>
                 </div>

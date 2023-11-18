@@ -22,11 +22,18 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username']
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
+
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     image_url = serializers.SerializerMethodField()
     author = UserSerializer()
+    category = CategorySerializer()
 
     class Meta:
         model = Post
@@ -36,9 +43,3 @@ class PostSerializer(serializers.ModelSerializer):
         if obj.image:
             return self.context['request'].build_absolute_uri(obj.image.url)
         return None
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'name']
