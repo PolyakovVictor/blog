@@ -85,7 +85,7 @@ const DetailPostPage = () => {
                                     <img src="https://mdbootstrap.com/img/Photos/Avatars/img (23).jpg" className="user-image rounded-5 shadow-1-strong me-2"
                                     alt="" loading="lazy" />
                                     <span>{post.title} Published <u>15.07.2020</u> by</span>
-                                    <a href="" className="ms-2">Anna</a>
+                                    <a href="" className="ms-2">{post.author.username}</a>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,9 @@ const DetailPostPage = () => {
                     <section className='border-bottom pb-4'>
 
                         {post.tags.map((tag: ITagItem) => (
-                            <span key={tag.id} className="badge text-bg-dark fs-6 p-3 mr-2">{tag.name}</span>
+                            <Link to={`/post-by-tag/${tag.id}`}>
+                                <span key={tag.id} className="badge text-bg-dark fs-6 p-3 mr-2">{tag.name}</span>
+                            </Link>
                         ))}
 
                     </section>
@@ -108,7 +110,7 @@ const DetailPostPage = () => {
 
 
 
-                    <section className="border-bottom border-top py-4 mb-3">
+                    <section className="border-bottom border-top py-4 mb-3 pl-3 pr-3">
                         <p className="text-center"><strong>Comments</strong></p>
 
                         {post.comments.map((comment : IComment) => (

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Tag, Category, Comment
+from .models import Post, Tag, Category, Comment, User
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -16,10 +16,17 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'username', 'post', 'content', 'created_at']
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
+
+
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     image_url = serializers.SerializerMethodField()
+    author = UserSerializer()
 
     class Meta:
         model = Post

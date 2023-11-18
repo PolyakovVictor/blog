@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from . import utils
 from rest_framework import generics
+from django.shortcuts import get_object_or_404
 
 
 class PostViewPagination(PageNumberPagination):
@@ -60,7 +61,6 @@ class CommentView(APIView):
             raise ValidationError({"detail": "User not authorized"})
         request_data = request.data.copy()
         request_data['user'] = str(request.user.id)
-        print(request_data)
         serializer = CommentSerializer(data=request_data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -82,3 +82,21 @@ class TagView(APIView):
         tags = Tag.objects.all()
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
+
+
+class PostListByTag(generics.ListAPIView):
+    pagination_class = PostViewPagination
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        tag_id = self.kwargs['tag_id']
+        tag = get_object_or_404(Tag, id=tag_id)
+        posts = Post.objects.filter(tags=tag)
+        return posts
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request)
+        serializer = self.serializer_class(page, many=True, context={'request': request})
+        return paginator.get_paginated_response(serializer.data)

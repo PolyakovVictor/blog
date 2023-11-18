@@ -59,6 +59,11 @@ const Navbar: React.FC = () => {
                 <strong className='px-1'>Blog</strong>
             </Link>
             <div className='flex item-center'>
+              <Link to="/blog" className='text-decoration-none flex mr-3'>
+                <button className="navbar-toggler" type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                  Gallery
+                </button>
+              </Link>
               <Link to="/daily-challenge" className='text-decoration-none flex mr-3'>
                 <button className="navbar-toggler" type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                   Daily
@@ -121,12 +126,17 @@ const Navbar: React.FC = () => {
                 <strong className='px-1'>Blog</strong>
             </Link>
             <div className='flex item-center'>
+              <Link to="/blog" className='text-decoration-none flex mr-3'>
+                <button className="navbar-toggler" type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                  Gallery
+                </button>
+              </Link>
               <Link to="/daily-challenge" className='text-decoration-none flex mr-3'>
                 <button className="navbar-toggler" type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                   Daily
                 </button>
               </Link>
-              <h4 className='mr-2 ml-2 mt-2'>Log</h4>
+              <h4 className='mr-2 ml-2 mt-2 border-left'>Log</h4>
               <Link to="/auth" className='text-decoration-none flex'>
                 <button className="navbar-toggler" type="button" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                   In

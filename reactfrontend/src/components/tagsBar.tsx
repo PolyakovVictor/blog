@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import '../style/tagsBar.css';
 import { ITagItem } from '../models';
+import { Link } from 'react-router-dom';
 
 interface TagsBarProps {
   tags: ITagItem[];
@@ -24,13 +25,15 @@ const TagsBar: React.FC<TagsBarProps> = ({ tags }) => {
       <div className='pl-10 pr-10'>
         <Slider {...settings}>
           {tags.map((tag, index) => (
-            <div key={index} className='p-2'>
-              <span className="badge d-flex p-2 align-items-center text-bg-secondary rounded-pill justify-content-center fs-5">
-                <span className='px-1'>
-                  {tag.name}
+            <Link to={`/post-by-tag/${tag.id}`}>
+              <div key={index} className='p-2'>
+                <span className="badge d-flex p-2 align-items-center text-bg-secondary rounded-pill justify-content-center fs-5">
+                  <span className='px-1'>
+                    {tag.name}
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
+            </Link>
           ))}
         </Slider>
       </div>
