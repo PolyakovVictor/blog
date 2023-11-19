@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import Footer from './components/footer';
 import Navbar from './components/navbar';
 import Comment from './components/comment';
-import {SamePost} from './components/displaySamePost';
+import {SamePost} from './components/samePost';
 import './style/detailPostPage.css';
 import { Helmet } from 'react-helmet';
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -21,19 +21,27 @@ const DetailPostPage = () => {
 
     const fetchPost = async (page_id: any) => {
         try {
-        const response = await axios.get(`http://localhost:8000/api/post/${page_id}/`);
-        setPost(response.data);
+            const response = await axios.get(`http://localhost:8000/api/post/${page_id}/`);
+            setPost(response.data);
         } catch (error) {
-        console.error('Error loading data:', error);
+            console.error('Error loading data:', error);
         }
     };
 
     const fetchSamePosts = async (category_id: any) => {
         try {
-          const response = await axios.get(`http://localhost:8000/api/post/by_category/${category_id}/?page=1`);
-          setSamePosts(response.data.results);
+            const countResponse = await axios.get(`http://localhost:8000/api/post/by_category/${category_id}/?page=1`);
+            const totalCount = countResponse.data.count;
+
+            const postsPerPage = 9;
+            const totalPages = Math.ceil(totalCount / postsPerPage);
+
+            const randomPage = Math.floor(Math.random() * totalPages) + 1;
+
+            const response = await axios.get(`http://localhost:8000/api/post/by_category/${category_id}/?page=${randomPage}`);
+            setSamePosts(response.data.results);
         } catch (error) {
-          console.error('Error loading data:', error);
+            console.error('Error loading data:', error);
         }
       };
 
