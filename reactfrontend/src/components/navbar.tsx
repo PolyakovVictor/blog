@@ -2,17 +2,20 @@ import axios from 'axios';
 import '../style/navbar.css';
 import { Helmet } from "react-helmet";
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { IUserData } from "../models"
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate()
   const auth_token = localStorage.getItem('auth_token');
+  const [userData, setUserData] = useState<IUserData>()
   const handleLogout = async () => {
     const response = await axios.post(
       "http://localhost:8000/auth/token/logout/",
       {},
       {
         headers: {
-          Authorization: `Token ${localStorage.getItem("auth_token")}`,
+          Authorization: `Token ${auth_token}`,
         },
       }
     );
@@ -25,7 +28,26 @@ const Navbar: React.FC = () => {
     }
   }
 
-  if (auth_token){
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/auth/users/me/', {
+          headers: {
+            Authorization: `Token ${auth_token}`
+          }
+        });
+        
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (auth_token && userData){
     return (
       <header>
         <Helmet>
@@ -35,11 +57,19 @@ const Navbar: React.FC = () => {
         <div className="collapse text-bg-dark" id="navbarHeader">
           <div className="container">
             <div className="row">
-              <div className="col-sm-8 col-md-7 py-4">
-                <h4>About</h4>
-                <p className="text-body-secondary">Discover, Learn, and Share - Your Ultimate Blogging Hub! Dive into a world of captivating stories, insightful articles, and valuable knowledge. Join our vibrant community of writers and readers. Welcome to the Blogiverse!</p>
-              </div>
-              <div className="col-sm-4 offset-md-1 py-4">
+
+                <div className="col-sm-8 col-md-auto pt-5">
+                  <div className="card">
+                      <div className="d-flex justify-content-start">
+                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6doYkFa5roepE3s3molnp-2k9-C1ceaHZgw&usqp=CAU" className="card-img-top rounded-circle mt-2 ml-2 mb-2" style={{ width: '5rem', height: '5rem' }} alt="Avatar" />
+                          <div className="card-body d-inline-block">
+                              <h6 className="card-title text-align-center">{userData.username}</h6>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+              <div className="col-sm-4 offset-md-3 py-4">
                 <h4>Contact</h4>
                 <ul className="list-unstyled">
                   <li><a href="https://getbootstrap.com/docs/5.3/examples/album/#" className="text-white">Follow on Twitter</a></li>

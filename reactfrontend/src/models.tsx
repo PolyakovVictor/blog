@@ -23,3 +23,9 @@ export interface IComment{
     content: string
     created_at: string
 }
+
+export interface IUserData{
+    id: number
+    email: string
+    username: string
+}

@@ -8,6 +8,7 @@ import CreatePostPage from './CreatePostPage';
 import DailyChallengePage from './DailyChallengePage';
 import DetailPostPage from './DetailPostPage';
 import PostByTagPage from './PostByTagPage';
+import ProfilePage from './ProfilePage'
 
 class App extends React.Component {
   render() {
@@ -18,6 +19,7 @@ class App extends React.Component {
             <Route path="/create-post" element={<CreatePostPage/> }></Route>
             <Route path="/detail-post/:post_id" element={<DetailPostPage /> }></Route>
             <Route path="/daily-challenge" element={<DailyChallengePage/> }></Route>
+            <Route path="/profile" element={<ProfilePage/>}></Route>
             <Route path="/register" element={<RegisterPage/> }></Route>
             <Route path="/auth" element={<AuthPage/ >} />
             <Route path="/blog" element={<BlogPage/ >} />
