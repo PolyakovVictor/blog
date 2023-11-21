@@ -1,5 +1,30 @@
 venv/
-.env
-.sqlite3
 env/
 media/
+__pycache__/
+
+
+# Django
+*.pyc
+*.pyo
+__pycache__/
+*.sqlite3
+
+# React
+node_modules/
+build/
+.DS_Store
+
+# Environment variables
+.env
+
+# IDE or Editor specific files
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
