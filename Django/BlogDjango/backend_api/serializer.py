@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Tag, Category, Comment, User
+from .models import Post, Tag, Category, Comment, User, ProfileImage
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -26,6 +26,19 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+
+
+class ProfileImageSerializer(serializers.ModelSerializer):
+    profile_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProfileImage
+        fields = ['profile_image', ]
+
+    def get_profile_image(self, obj):
+        if obj.profile_image:
+            return self.context['request'].build_absolute_uri(obj.profile_image.url)
+        return None
 
 
 class PostSerializer(serializers.ModelSerializer):

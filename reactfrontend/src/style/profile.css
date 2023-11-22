@@ -1,52 +1,11 @@
-.img-profile {
-    width: 150px;
-    z-index: 1;
-}
-
-.btn-profile {
-    
-    z-index: 1;
-}
-
-.user-detail {
-    margin-top: 130px;
-}
-
-.user-info {
-    background-color: #343a40;
-    color: #fff;
-}
-
-.user-info-text {
-    background-color: #343a40;
-    color: #fff;
-}
-
-.bg {
-    background-color: #000;
-    height: 200px;
-}
-
-.image-div {
-    width: 150px;
-}
-
-
-.img-profile,
-.w-100 {
-    filter: brightness(0.8);
-}
-
-.text-black {
-    color: #fff;
-}
-
-
-.text-muted, .text-muted:hover {
-    color: #ccc;
-}
-
-
-.card-body .lead, .card-body p {
-    color: #fff;
-}
+.avatar-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+  }

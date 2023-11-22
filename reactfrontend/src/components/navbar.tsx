@@ -60,12 +60,14 @@ const Navbar: React.FC = () => {
 
                 <div className="col-sm-8 col-md-auto pt-5">
                   <div className="card">
+                    <Link to="/profile" className="navbar-brand d-flex align-items-center">
                       <div className="d-flex justify-content-start">
                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6doYkFa5roepE3s3molnp-2k9-C1ceaHZgw&usqp=CAU" className="card-img-top rounded-circle mt-2 ml-2 mb-2" style={{ width: '5rem', height: '5rem' }} alt="Avatar" />
                           <div className="card-body d-inline-block">
                               <h6 className="card-title text-align-center">{userData.username}</h6>
                           </div>
                       </div>
+                    </Link>
                   </div>
                 </div>
 

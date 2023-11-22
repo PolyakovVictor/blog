@@ -11,4 +11,5 @@ urlpatterns = [
     path('categories/', views.CategoryView.as_view(), name='category'),
     path('comment/', views.CommentView.as_view(), name='comment'),
     path('tag/', views.TagView.as_view(), name='tag'),
+    path('upload_profile_picture/', views.ProfileImageView.as_view(), name='upload-profile-image'),
 ]

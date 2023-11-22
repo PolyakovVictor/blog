@@ -1,11 +1,12 @@
 from django.forms import ValidationError
 from rest_framework.views import APIView
-from .models import Post, Category, Tag, Comment
-from .serializer import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer
+from .models import Post, Category, Tag, Comment, ProfileImage
+from .serializer import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, ProfileImageSerializer
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.parsers import MultiPartParser, FormParser
 from . import utils
-from rest_framework import generics
+from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 
 
@@ -118,3 +119,28 @@ class PostListByCategoryView(generics.ListAPIView):
         page = paginator.paginate_queryset(queryset, request)
         serializer = self.serializer_class(page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
+
+
+class ProfileImageView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = ProfileImageSerializer
+
+    def put(self, request, *args, **kwargs):
+        try:
+            profile = ProfileImage.objects.get(user=request.user)
+        except ProfileImage.DoesNotExist:
+            profile = ProfileImage(user=request.user)
+
+        serializer = ProfileImageSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = ProfileImage.objects.get(user=request.user)
+            serializer = ProfileImageSerializer(profile, context={'request': request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ProfileImage.DoesNotExist:
+            return Response("Profile Image not found", status=status.HTTP_404_NOT_FOUND)
