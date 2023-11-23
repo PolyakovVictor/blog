@@ -131,7 +131,11 @@ class ProfileImageView(APIView):
         except ProfileImage.DoesNotExist:
             profile = ProfileImage(user=request.user)
 
-        serializer = ProfileImageSerializer(profile, data=request.data)
+        profile.profile_image = request.data.get('profile_image')
+        profile.save()
+
+        serializer = ProfileImageSerializer(profile, data=request.data, context={'request': request})
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
