@@ -12,6 +12,7 @@ import Footer from './components/footer';
 const ProfilePage: React.FC = () => {
     const [key, setKey] = useState('favoritePins');
     const [userData, setUserData] = useState<IUserData>();
+    const [userImageUrl, setUserImageUrl] = useState<string>();
     const auth_token = localStorage.getItem('auth_token');
 
     const user = {
@@ -39,13 +40,13 @@ const ProfilePage: React.FC = () => {
 
         const fetchUserImage = async () => {
           try {
-            const response = await axios.get('http://localhost:8000/auth/users/me/', {
+            const response = await axios.get('http://localhost:8000/api/profile_image/', {
               headers: {
                 Authorization: `Token ${auth_token}`
               }
             });
             
-            setUserData(response.data);
+            setUserImageUrl(response.data.profile_image);
           } catch (error) {
             console.error('Error fetching user data:', error);
           }
@@ -70,7 +71,7 @@ const ProfilePage: React.FC = () => {
         <div className="container mt-4">
         <div className="text-center">
           <div className="avatar-container">
-            <img src={user.avatar} alt="Аватар" className="avatar" />
+            <img src={userImageUrl} alt="Аватар" className="avatar" />
           </div>
           <h2>{userData.username}</h2>
           <button className="btn btn-primary" onClick={handleEditProfile}>
