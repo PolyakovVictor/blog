@@ -1,6 +1,6 @@
 from django.forms import ValidationError
 from rest_framework.views import APIView
-from .models import Post, Category, Tag, Comment, ProfileImage
+from .models import FavoritePost, Post, Category, Tag, ProfileImage
 from .serializer import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, ProfileImageSerializer
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -148,3 +148,17 @@ class ProfileImageView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ProfileImage.DoesNotExist:
             return Response("Profile Image not found", status=status.HTTP_404_NOT_FOUND)
+
+
+class FavoritePostView(APIView):
+    def post(self, request, post_id):
+        if request.user.is_authenticated:
+            post = get_object_or_404(Post, pk=post_id)
+            favorite, created = FavoritePost.objects.get_or_create(user=request.user, post=post)
+            if created:
+                return Response({'message': 'The post has been added to favorites'})
+            else:
+                favorite.delete()
+                return Response({'message': 'The post has been removed from favorite'}, status=400)
+        else:
+            return Response({'message': 'User not authenticated'}, status=401)

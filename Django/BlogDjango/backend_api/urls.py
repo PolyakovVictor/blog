@@ -12,4 +12,5 @@ urlpatterns = [
     path('comment/', views.CommentView.as_view(), name='comment'),
     path('tag/', views.TagView.as_view(), name='tag'),
     path('profile_image/', views.ProfileImageView.as_view(), name='upload-profile-image'),
+    path('post/add_to_favorite/<int:post_id>', views.FavoritePostView.as_view(), name='add-post-to-favorite')
 ]

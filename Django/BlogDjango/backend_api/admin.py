@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Tag, Comment
+from .models import Post, Category, Tag, Comment, FavoritePost
 
 
 @admin.register(Post)
@@ -19,4 +19,9 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
+    list_display = ('post', 'user')
+
+
+@admin.register(FavoritePost)
+class FavoritePostAdmin(admin.ModelAdmin):
     list_display = ('post', 'user')
