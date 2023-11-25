@@ -29,3 +29,8 @@ export interface IUserData{
     email: string
     username: string
 }
+
+
+export interface FavoriteButtonProps {
+    post_id: number;
+  }

@@ -156,9 +156,17 @@ class FavoritePostView(APIView):
             post = get_object_or_404(Post, pk=post_id)
             favorite, created = FavoritePost.objects.get_or_create(user=request.user, post=post)
             if created:
-                return Response({'message': 'The post has been added to favorites'})
+                return Response({'message': 'The post has been added to favorites', 'available': True})
             else:
                 favorite.delete()
-                return Response({'message': 'The post has been removed from favorite'}, status=400)
+                return Response({'message': 'The post has been removed from favorite', 'available': False})
         else:
             return Response({'message': 'User not authenticated'}, status=401)
+    
+    def get(self, request, post_id):
+        if request.user.is_authenticated:
+            post = get_object_or_404(Post, pk=post_id)
+            is_favorite = FavoritePost.objects.filter(user=request.user, post=post).exists()
+            return Response({'available': is_favorite})
+        else:
+            return Response({'available': False})

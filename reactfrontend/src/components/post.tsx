@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom"
-import { IProduct } from "../models"
-import '../style/post.css'
+import { Link } from "react-router-dom";
+import { IProduct } from "../models";
+import '../style/post.css';
+import FavoriteButton from './favoriteBtn';
 
 
 interface ProductProps {
@@ -31,6 +32,9 @@ export function Post(props: ProductProps) {
                             <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
                         </div>
                         <small className="text-body-secondary">{ props.product.date }</small>
+                    </div>
+                    <div className="mt-auto text-right">
+                        <FavoriteButton post_id={props.product.id}/>
                     </div>
                 </div>
             </div>
