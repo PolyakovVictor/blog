@@ -162,7 +162,7 @@ class FavoritePostView(APIView):
                 return Response({'message': 'The post has been removed from favorite', 'available': False})
         else:
             return Response({'message': 'User not authenticated'}, status=401)
-    
+
     def get(self, request, post_id):
         if request.user.is_authenticated:
             post = get_object_or_404(Post, pk=post_id)

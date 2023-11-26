@@ -18,7 +18,6 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ post_id }) => {
             }
           );
           fetchAvailable(post_id)
-          console.log(response)
         } catch (error) {
           console.error('Error adding to favorites:', error);
         }
@@ -43,7 +42,6 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ post_id }) => {
       useEffect(() => {
         fetchAvailable(post_id);
     }, [post_id]);
-    console.log(available)
     if (available){
     return (
         <Button variant="primary" onClick={() => handleAddToFavorites(post_id)}>
@@ -52,6 +50,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ post_id }) => {
           </svg>
         </Button>
     );
+    }if (!auth_token) {
+      return(
+        <div></div>
+      );
     } else {
       return (
         <Button variant="primary" onClick={() => handleAddToFavorites(post_id)}>

@@ -33,4 +33,9 @@ export interface IUserData{
 
 export interface FavoriteButtonProps {
     post_id: number;
-  }
+}
+
+export interface UploadProfileImageModalProps{
+    show: boolean;
+    handleClose: () => void;
+}

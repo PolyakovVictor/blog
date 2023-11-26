@@ -8,11 +8,13 @@ import './style/profile.css';
 import { IUserData } from './models';
 import axios from 'axios';
 import Footer from './components/footer';
+import UploadProfileImageModal from './components/uploadProfileImageModal';
 
 const ProfilePage: React.FC = () => {
     const [key, setKey] = useState('favoritePins');
     const [userData, setUserData] = useState<IUserData>();
     const [userImageUrl, setUserImageUrl] = useState<string>();
+    const [showModal, setShowModal] = useState(false);
     const auth_token = localStorage.getItem('auth_token');
 
     const user = {
@@ -57,10 +59,14 @@ const ProfilePage: React.FC = () => {
       }, []);
 
 
-      const handleEditProfile = () => {
-        // Logic to handle pressing the 'Edit Profile' button
-        // For example, opening a modal window to edit a profile
+      const handleModalClose = () => {
+        setShowModal(false);
       };
+
+    const handleModalShow = () => {
+        setShowModal(true);
+      };
+
   if (userData){
     return (
       <div>
@@ -74,9 +80,12 @@ const ProfilePage: React.FC = () => {
             <img src={userImageUrl} alt="Аватар" className="avatar" />
           </div>
           <h2>{userData.username}</h2>
-          <button className="btn btn-primary" onClick={handleEditProfile}>
-            Edit Profile
-          </button>
+          <div>
+            <button className="btn btn-primary" onClick={handleModalShow}>
+              Upload image
+            </button>
+            <UploadProfileImageModal show={showModal} handleClose={handleModalClose} />
+          </div>
         </div>
         <div className="mt-4">
           <Tabs activeKey={key} onSelect={(k) => setKey(k as string)}>
