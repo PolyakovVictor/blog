@@ -9,7 +9,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ post_id }) => {
     const handleAddToFavorites = async (post_id: number) => {
         try {
           const response = await axios.post(
-            `http://localhost:8000/api/post/add_to_favorite/${post_id}`,
+            `http://localhost:8000/api/post/check_on_post_favorite/${post_id}`,
             null,
             {
               headers: {
@@ -26,7 +26,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ post_id }) => {
     const fetchAvailable = async (post_id: number) => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/api/post/add_to_favorite/${post_id}`,
+            `http://localhost:8000/api/post/check_on_post_favorite/${post_id}`,
             {
               headers: {
                 Authorization: `Token ${auth_token}`,

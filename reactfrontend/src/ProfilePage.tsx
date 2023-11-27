@@ -5,10 +5,11 @@ import { Tab, Tabs } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Helmet } from 'react-helmet';
 import './style/profile.css';
-import { IUserData } from './models';
+import { IUserData, State } from './models';
 import axios from 'axios';
 import Footer from './components/footer';
 import UploadProfileImageModal from './components/uploadProfileImageModal';
+import ReactPaginate from 'react-paginate';
 
 const ProfilePage: React.FC = () => {
     const [key, setKey] = useState('favoritePins');
@@ -16,6 +17,51 @@ const ProfilePage: React.FC = () => {
     const [userImageUrl, setUserImageUrl] = useState<string>();
     const [showModal, setShowModal] = useState(false);
     const auth_token = localStorage.getItem('auth_token');
+
+    // const [posts, setPosts] = useState([]);
+    // const [currentPage, setCurrentPage] = useState();
+    // const [totalPages, setTotalPages] = useState();
+
+    const [state, setState] = useState<State>({
+      posts: [],
+      currentPage: 1,
+      totalPages: 1,
+    });
+
+    const fetchPosts = async (page: number): Promise<void> => {
+      try {
+        console.log(page)
+        const response = await axios.get(`http://localhost:8000/api/post/favorite_posts_list_by_user/?page=${page}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `token ${auth_token}`,
+        },
+        });
+        setState((prevState: State) => ({
+          ...prevState,
+          posts: response.data.results,
+          totalPages: response.data.count,
+        }));
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchPosts(state.currentPage);
+    }, []); // вызовет fetchPosts при монтировании компонента
+  
+    const handlePageChange = ({ selected }: { selected: number }): void => {
+      const newPage = selected + 1;
+      setState((prevState: State) => {
+        const newState = {
+          ...prevState,
+          currentPage: newPage,
+        };
+        fetchPosts(newPage);
+        return newState;
+      });
+    };
 
     const user = {
         avatar: 'https://i.pinimg.com/236x/01/0c/75/010c75349d254794e63ef494f0444c00.jpg',
@@ -91,11 +137,30 @@ const ProfilePage: React.FC = () => {
           <Tabs activeKey={key} onSelect={(k) => setKey(k as string)}>
             <Tab eventKey="favoritePins" title="Favorite">
               <div className="row">
-                {user.favoritePins.map((pin, index) => (
-                  <div className="col-md-4 pt-3" key={index}>
-                    <img src={pin} alt={`Favorite ${index + 1}`} className="img-fluid rounded-4" />
+                {state.posts.map((output, id) => (
+                  <div className="col-md-4 pt-3" key={id}>
+                    <img src={output.image} alt={`Favorite ${id + 1}`} className="img-fluid rounded-4" />
                   </div>
                 ))}
+              </div>
+              <div className="d-flex justify-content-center mt-3">
+                  <ReactPaginate
+                  pageCount={Math.ceil(state.totalPages / 10)}
+                  pageRangeDisplayed={3}
+                  marginPagesDisplayed={2}
+                  onPageChange={handlePageChange}
+                  containerClassName={'pagination'}
+                  activeClassName='page-item active'
+                  breakClassName='page-item'
+                  nextClassName='page-item'
+                  disabledClassName='page-item disabled '
+                  pageClassName='page-item'
+                  previousClassName='page-item'
+                  previousLinkClassName='page-link'
+                  activeLinkClassName='page-link'
+                  pageLinkClassName='page-link'
+                  nextLinkClassName='page-link'
+                />
               </div>
             </Tab>
             <Tab eventKey="userPins" title="User posts">

@@ -39,3 +39,9 @@ export interface UploadProfileImageModalProps{
     show: boolean;
     handleClose: () => void;
 }
+
+export interface State {
+    posts: any[];
+    currentPage: number;
+    totalPages: number;
+  }

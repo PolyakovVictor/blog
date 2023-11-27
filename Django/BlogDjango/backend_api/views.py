@@ -150,7 +150,7 @@ class ProfileImageView(APIView):
             return Response("Profile Image not found", status=status.HTTP_404_NOT_FOUND)
 
 
-class FavoritePostView(APIView):
+class CreateOrRemoveFavoritePostView(APIView):    # Check the post on favorite add if it doesn't exist, and remove it from favorites if it does
     def post(self, request, post_id):
         if request.user.is_authenticated:
             post = get_object_or_404(Post, pk=post_id)
@@ -170,3 +170,20 @@ class FavoritePostView(APIView):
             return Response({'available': is_favorite})
         else:
             return Response({'available': False})
+
+
+class FavoritePostsListView(APIView):
+    pagination_class = PostViewPagination
+    serializer_class = PostSerializer
+
+    def get_queryset(self, user_id):
+        favorite_posts = FavoritePost.objects.filter(user=user_id)
+        posts = [fav_post.post for fav_post in favorite_posts]
+        return posts
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset(request.user)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request)
+        serializer = self.serializer_class(page, many=True, context={'request': request})
+        return paginator.get_paginated_response(serializer.data)
