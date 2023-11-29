@@ -187,3 +187,19 @@ class FavoritePostsListView(APIView):
         page = paginator.paginate_queryset(queryset, request)
         serializer = self.serializer_class(page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
+
+
+class UserPostsListView(APIView):
+    pagination_class = PostViewPagination
+    serializer_class = PostSerializer
+
+    def get_queryset(self, user_id):
+        favorite_posts = Post.objects.filter(author=user_id)
+        return favorite_posts
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset(request.user)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request)
+        serializer = self.serializer_class(page, many=True, context={'request': request})
+        return paginator.get_paginated_response(serializer.data)

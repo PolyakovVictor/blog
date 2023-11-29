@@ -13,5 +13,6 @@ urlpatterns = [
     path('tag/', views.TagView.as_view(), name='tag'),
     path('profile_image/', views.ProfileImageView.as_view(), name='upload-profile-image'),
     path('post/check_on_post_favorite/<int:post_id>', views.CreateOrRemoveFavoritePostView.as_view(), name='add-post-to-favorite'),
-    path('post/favorite_posts_list_by_user/', views.FavoritePostsListView.as_view(), name='favorite-posts-list')
+    path('post/favorite_posts_list_by_user/', views.FavoritePostsListView.as_view(), name='favorite-posts-list'),
+    path('post/user_posts_list_view/', views.UserPostsListView.as_view(), name='user-posts-list')
 ]

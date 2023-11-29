@@ -9,7 +9,6 @@ def get_post_data_from_request(request):
     image = request.data.get('image')
     tags_data = request.data.get('tags', '')
     tags = [tag.strip() for tag in tags_data.split(' ') if tag.strip()]
-
     return (title, description, category_obj, image, tags)
 
 

@@ -45,8 +45,8 @@ class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     image_url = serializers.SerializerMethodField()
-    author = UserSerializer()
-    category = CategorySerializer()
+    author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = Post
