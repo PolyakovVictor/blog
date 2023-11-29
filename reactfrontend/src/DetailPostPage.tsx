@@ -39,6 +39,7 @@ const DetailPostPage = () => {
             const randomPage = Math.floor(Math.random() * totalPages) + 1;
 
             const response = await axios.get(`http://localhost:8000/api/post/by_category/${category_id}/?page=${randomPage}`);
+            console.log('here', response.data.results)
             setSamePosts(response.data.results);
         } catch (error) {
             console.error('Error loading data:', error);
@@ -50,8 +51,9 @@ const DetailPostPage = () => {
     }, [post_id]);
 
     useEffect(() => {
-        if (post && post.category.id) {
-            fetchSamePosts(post.category.id);
+        console.log(post.category)
+        if (post && post.category) {
+            fetchSamePosts(post.category);
         }
     }, [post]);
 
