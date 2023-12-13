@@ -29,7 +29,7 @@ class PostView(APIView):
 
     def post(self, request):
         if not request.user.is_authenticated:
-            raise ValidationError({"detail": "User not authorized"})
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
         title, description, category_obj, image, tags = utils.get_post_data_from_request(request)
 
@@ -46,7 +46,8 @@ class PostView(APIView):
             utils.add_or_create_tag(tags=tags, post=post)
             return Response(serializer.data)
         else:
-            return Response(serializer.error, status=400)
+            print("----------------------------------------------", serializer.error)
+            return Response(serializer.error)
 
 
 class PostDetailView(generics.RetrieveAPIView):
