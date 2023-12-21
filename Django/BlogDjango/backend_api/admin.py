@@ -4,7 +4,7 @@ from .models import Post, Category, Tag, Comment, FavoritePost
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author')
+    list_display = ('title', 'author', 'image')
 
 
 @admin.register(Category)

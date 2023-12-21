@@ -8,7 +8,8 @@ import { IUserData } from "../models"
 const Navbar: React.FC = () => {
   const navigate = useNavigate()
   const auth_token = localStorage.getItem('auth_token');
-  const [userData, setUserData] = useState<IUserData>()
+  const [userData, setUserData] = useState<IUserData>();
+  const [userImageUrl, setUserImageUrl] = useState<string>();
   const handleLogout = async () => {
     const response = await axios.post(
       "http://localhost:8000/auth/token/logout/",
@@ -44,7 +45,22 @@ const Navbar: React.FC = () => {
       }
     };
 
+    const fetchUserImage = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/profile_image/', {
+          headers: {
+            Authorization: `Token ${auth_token}`
+          }
+        });
+        
+        setUserImageUrl(response.data.profile_image);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
     fetchUserData();
+    fetchUserImage();
   }, []);
 
   if (auth_token && userData){
@@ -62,7 +78,7 @@ const Navbar: React.FC = () => {
                   <div className="card">
                     <Link to="/profile" className="navbar-brand d-flex align-items-center">
                       <div className="d-flex justify-content-start">
-                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6doYkFa5roepE3s3molnp-2k9-C1ceaHZgw&usqp=CAU" className="card-img-top rounded-circle mt-2 ml-2 mb-2" style={{ width: '5rem', height: '5rem' }} alt="Avatar" />
+                          <img src={userImageUrl} className="card-img-top rounded-circle mt-2 ml-2 mb-2" style={{ width: '5rem', height: '5rem' }} alt="Avatar" />
                           <div className="card-body d-inline-block">
                               <h6 className="card-title text-align-center">{userData.username}</h6>
                           </div>

@@ -51,7 +51,7 @@ const DetailPostPage = () => {
     }, [post_id]);
 
     useEffect(() => {
-        console.log(post.category)
+        console.log(post)
         if (post && post.category) {
             fetchSamePosts(post.category);
         }

@@ -147,7 +147,7 @@ const ProfilePage: React.FC = () => {
         <div className="container mt-4">
         <div className="text-center">
           <div className="avatar-container">
-            <img src={userImageUrl} alt="Аватар" className="avatar" />
+            <img src={userImageUrl} alt="Аватар" className="avatar" style={{ width: '10rem', height: '10rem' }} />
           </div>
           <h2>{userData.username}</h2>
           <div>
