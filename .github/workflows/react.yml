@@ -21,11 +21,14 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
+      working-directory: reactfrontend/
 
     - name: Build React app
       run: |
         npm run build
+      working-directory: reactfrontend/
 
     - name: Deploy to server
       run: |
         npm start
+      working-directory: reactfrontend/
