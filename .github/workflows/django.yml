@@ -53,9 +53,3 @@ jobs:
         source venv/bin/activate
         python manage.py test
       working-directory: Django/BlogDjango/
-
-    - name: Deploy to production
-      run: |
-        source venv/bin/activate
-        python manage.py runserver
-      working-directory: Django/BlogDjango/
