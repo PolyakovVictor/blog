@@ -29,6 +29,11 @@ jobs:
       with:
         python-version: '3.x' # ваша версия Python
 
+    - name: Create and Activate venv
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+
     - name: Install poetry
       run: |
         pip install poetry
@@ -36,27 +41,6 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install
-
-    - name: test1 venv
-      run: |
-        pwd
-        ls
-
-    - name: test2 venv
-      run: |
-        pwd
-        ls
-      working-directory: Django/
-
-    - name: test3 venv
-      run: |
-        pwd
-        ls
-      working-directory: Django/BlogDjango/
-
-    - name: Activate venv
-      run: |
-        source .venv/bin/activate
 
     - name: Run Django tests
       run: |
