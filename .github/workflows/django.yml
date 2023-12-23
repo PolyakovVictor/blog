@@ -32,12 +32,10 @@ jobs:
     - name: Install poetry
       run: |
         pip install poetry
-      working-directory: Django/BlogDjango/
 
     - name: Install dependencies
       run: |
         poetry install
-      working-directory: Django/BlogDjango/
 
     - name: test1 venv
       run: |
@@ -59,7 +57,6 @@ jobs:
     - name: Activate venv
       run: |
         source .venv/bin/activate
-      working-directory: Django/BlogDjango/
 
     - name: Run Django tests
       run: |
