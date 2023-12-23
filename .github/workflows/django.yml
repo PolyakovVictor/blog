@@ -39,6 +39,23 @@ jobs:
         poetry install
       working-directory: Django/BlogDjango/
 
+    - name: test1 venv
+      run: |
+        pwd
+        ls
+
+    - name: test2 venv
+      run: |
+        pwd
+        ls
+      working-directory: Django/
+
+    - name: test3 venv
+      run: |
+        pwd
+        ls
+      working-directory: Django/BlogDjango/
+
     - name: Activate venv
       run: |
         source .venv/bin/activate
