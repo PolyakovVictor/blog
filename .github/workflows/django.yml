@@ -41,6 +41,8 @@ jobs:
 
     - name: Run Django tests
       run: |
+        ls
+        pip list
         python manage.py test
       working-directory: Django/BlogDjango/
 
