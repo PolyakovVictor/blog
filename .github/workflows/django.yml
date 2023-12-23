@@ -1,0 +1,48 @@
+name: Django CI/CD
+
+on:
+  push:
+    branches:
+      - main # или другая ветка, которую вы используете
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_NAME: ${{ secrets.DATABASE_NAME }}
+      DB_USER: ${{ secrets.DATABASE_USER }}
+      DB_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DB_HOST: ${{ secrets.DATABASE_HOST }}
+      DB_PORT: ${{ secrets.DATABASE_PORT }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Create PostgreSQL database
+      run: |
+        psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME;"
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' # ваша версия Python
+
+    - name: Install poetry
+      run: |
+        pip install poetry
+        # Дополнительные команды для установки дополнительных зависимостей
+
+    - name: Install dependencies
+      run: |
+        poetry install
+        # Дополнительные команды для установки дополнительных зависимостей
+
+    - name: Run Django tests
+      run: |
+        python manage.py test
+
+    - name: Deploy to production
+      run: |
+        python manage.py runserver
