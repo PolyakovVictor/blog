@@ -19,10 +19,15 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+    
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+      with:
+        docker-compose-version: '1.29.2'
 
-    - name: Create PostgreSQL database
+    - name: Build and run Docker Compose with DB
       run: |
-        psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME;"
+        docker-compose up -d
 
     - name: Set up Python
       uses: actions/setup-python@v2
